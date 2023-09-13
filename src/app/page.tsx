@@ -2,11 +2,19 @@
 import { useEffect, useRef, useState } from 'react';
 
 export default function Home() {
+  // const [products, setProducts] = useState<
+  //   { id: string; properties: { id: string }[] }[]
+  // >([]);
   const [products, setProducts] = useState<
-    { id: string; properties: { id: string }[] }[]
+    { id: string; name: string; createdAt: string }[]
   >([]);
+  // useEffect(() => {
+  //   fetch(`http://localhost:3000/api/products`)
+  //     .then((res) => res.json())
+  //     .then((data) => setProducts(data.items));
+  // }, []);
   useEffect(() => {
-    fetch(`http://localhost:3000/api/products`)
+    fetch(`http://localhost:3000/api/getProducts`)
       .then((res) => res.json())
       .then((data) => setProducts(data.items));
   }, []);
@@ -33,6 +41,13 @@ export default function Home() {
         {products &&
           products.map((item) => (
             <div key={item.id}>
+              {item.name}
+              <span>{item.createdAt}</span>
+            </div>
+          ))}
+        {/* {products &&
+          products.map((item) => (
+            <div key={item.id}>
               {JSON.stringify(item)}
               {item.properties &&
                 Object.entries(item.properties).map(([key, value]) => (
@@ -52,7 +67,7 @@ export default function Home() {
               <br />
               <br />
             </div>
-          ))}
+          ))} */}
       </div>
     </main>
   );
