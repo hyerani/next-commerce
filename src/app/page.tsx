@@ -1,5 +1,5 @@
 'use client';
-import Button from '@components/Button';
+// import Button from '@/components/Button';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
   //     .then((data) => setProducts(data.items));
   // }, []);
   useEffect(() => {
-    fetch(`http://localhost:3000/api/getProducts`)
+    fetch(`http://localhost:3000/api/getProducts`, { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => setProducts(data.items));
   }, []);
@@ -37,7 +37,7 @@ export default function Home() {
     <main>
       <input ref={inputRef} type="text" placeholder="name" />
       <button onClick={handleClick}>add jacket</button>
-      <Button onClick={handleClick}>add jacket 2</Button>
+      {/* <Button onClick={handleClick}>add jacket 2</Button> */}
       <div>
         <p>Product List</p>
         {products &&
