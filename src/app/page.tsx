@@ -1,4 +1,5 @@
 'use client';
+import Button from '@components/Button';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Home() {
@@ -36,6 +37,7 @@ export default function Home() {
     <main>
       <input ref={inputRef} type="text" placeholder="name" />
       <button onClick={handleClick}>add jacket</button>
+      <Button onClick={handleClick}>add jacket 2</Button>
       <div>
         <p>Product List</p>
         {products &&

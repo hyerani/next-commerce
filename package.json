@@ -10,6 +10,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@notionhq/client": "^2.2.13",
     "@prisma/client": "^5.2.0",
     "@types/node": "20.5.9",
@@ -26,6 +28,7 @@
     "typescript": "5.2.2"
   },
   "devDependencies": {
+    "@emotion/babel-plugin": "^11.11.0",
     "husky": "^8.0.0",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
