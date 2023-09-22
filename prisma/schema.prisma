@@ -23,4 +23,5 @@ model products {
   image_url String?
   category_id Int
   createdAt DateTime @default(now())
+  contents String?
 }

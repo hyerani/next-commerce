@@ -1,9 +1,13 @@
 'use client';
+import CustomEditor from '@/components/Editor';
+import { EditorState, convertFromRaw } from 'draft-js';
 import { Metadata } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useParams, usePathname } from 'next/navigation';
+import { useRouter } from 'next/router';
 import Carousel from 'nuka-carousel';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import ImageGallery from 'react-image-gallery';
 
 const images = [
@@ -21,34 +25,41 @@ const images = [
   },
 ];
 
-// export const metadata: Metadata = {
-//   title: 'products title',
-//   description: 'products description',
-//   openGraph: {
-//     title: 'products title',
-//     description: 'products description',
-//     url: 'http://localhost:3000/products',
-//     type: 'website',
-//   },
-// };
-
 const Products = () => {
   // 작은 썸네일 이미지 눌렀을때 해당 이미지로 이동
   const [index, setIndex] = useState(0);
+  const params: Record<string, string | string[]> | null = useParams();
+  const productId = params?.id;
+  const [editorState, setEditorState] = useState<EditorState | undefined>(
+    undefined,
+  );
+  useEffect(() => {
+    if (productId != null) {
+      fetch(`http://localhost:3000/api/getProduct?id=${productId}`, {
+        cache: 'no-store',
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.items.contents) {
+            setEditorState(
+              EditorState.createWithContent(
+                convertFromRaw(JSON.parse(data.items.contents)),
+              ),
+            );
+          } else {
+            setEditorState(EditorState.createEmpty());
+          }
+        });
+    }
+  }, [productId]);
+
+  const handleSave = () => {
+    alert('save');
+  };
 
   // return <ImageGallery items={images} />;
   return (
     <>
-      <Head>
-        <meta property="og:url" content="http://localhost:3000/products" />
-        <meta property="og:type" content="products" />
-        <meta property="og:title" content="products title" />
-        <meta property="og:description" content="products description" />
-        <meta
-          property="og:image"
-          content="http://static01.nyt.com/images/2015/02/19/arts/international/19iht-btnumbers19A/19iht-btnumbers19A-facebookJumbo-v2.jpg"
-        />
-      </Head>
       <Carousel autoplay withoutControls wrapAround slideIndex={index}>
         {images.map((item) => (
           <Image
@@ -73,6 +84,13 @@ const Products = () => {
           </div>
         ))}
       </div>
+      {editorState != null && (
+        <CustomEditor
+          editorState={editorState}
+          onEditorStateChange={setEditorState}
+          onSave={handleSave}
+        />
+      )}
     </>
   );
 };
